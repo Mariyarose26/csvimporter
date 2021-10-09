@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import CSV files to MongoDB</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.1/papaparse.min.js"
+    integrity="sha512-EbdJQSugx0nVWrtyK3JdQQ/03mS3Q1UiAhRtErbwl1YL/+e2hZdlIcSURxxh7WXHTzn83sjlh2rysACoJGfb6g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+  <br><br>
+  <h1>Import a CSV file into MongoDB</h1><br><br>
+  <form action='upload' method="POST">
+    <label name="csv-input">Add a CSV file</label><br><br>
+    <input id="csv-input" name="csv-input" type="file" accept=".csv"><br><br>
+    <input id="csv" type="submit" value="Import CSV"><br>
+  </form>
+  <h4>Applications Used: Node.js, Express, MongoDB</h4>
+</body>
+</html>

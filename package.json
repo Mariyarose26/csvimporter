@@ -1,0 +1,21 @@
+{
+  "name": "csv-importer",
+  "version": "1.0.0",
+  "description": "Node.js CSV & MongoDB demo",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "nodejs",
+    "csv",
+    "mongodb"
+  ],
+  "author": "mariyarose26",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "express": "^4.16.3",
+    "mongoose": "^6.0.9",
+    "request": "^2.88.2"
+  }
+}
