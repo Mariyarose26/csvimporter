@@ -23,7 +23,7 @@ const csvImporter = async (fileToImport) => {
     .then(csvData => {
       console.log("CSV has "+ csvData.length + " Documents");
       return csvData;
-    });
+  });
        
   await Order.insertMany(csv, { ordered: false }, (err, res) => {
     if (err) console.log(err);
