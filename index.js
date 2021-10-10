@@ -1,34 +1,35 @@
 'use strict';
+const mongoose = require("mongoose");
+const csvtojson = require("csvtojson");
+const request = require("request");
 
-const http = require('http');
-const path = require('path');
-const fs = require('fs');
-const express = require('express');
-const Router = express.Router;
-const app = express();
-const router = new Router();
-const server = http.createServer(app);
-const port = 9000;
+// Variables to Declare 
+const fileToImport = "https://docs.google.com/spreadsheets/d/1JVqK-Nfa4jety-HE_KjrwwAwhGH6u1jsUVsSVbrxPxg/export?format=csv&gid=837598930";
+const dbUrl = "mongodb://localhost:27017/shopDB";
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'views/index.html'));
-});
+// Declare the Order model
+const Order = require('./models/order.js');
 
-app.post('/upload', upload.single('file'), (req, res) => {
-  res.send('Got a POST request');
-  const input = document.getElementById('csv-input');
-  input.addEventListener('change', function (event) {
-//Add CSV link
+mongoose.Promise = global.Promise;
+mongoose.set('debug', true);
+
+const csvImporter = async (fileToImport) => {
+  await mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+    console.log("MongoDB connected ...");
   });
-});
 
-app.use('/upload-csv', router);
-
-// Start server
-function startServer() {
-  server.listen(port, function () {
-    console.log('Express server listening on ', port);
+  const csv = await csvtojson()
+    .fromStream(request.get(fileToImport))
+    .then(csvData => {
+      console.log("CSV has "+ csvData.length + " Documents");
+      return csvData;
+    });
+       
+  await Order.insertMany(csv, { ordered: false }, (err, res) => {
+    if (err) console.log(err);
+    console.log("CSV has been imported..."+ res.length+" files");
+    mongoose.disconnect();
   });
 }
 
-setImmediate(startServer);
+csvImporter(fileToImport);
