@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const { Model, Schema } = mongoose;
 
 const orderSchema = new Schema({
-  orderId: String,
+  orderId: {
+    type: String, 
+    unique: true,
+    required: [true, 'Order requires a Unique ID']},
   item: String,
   quantity: Number,
   customerId: {

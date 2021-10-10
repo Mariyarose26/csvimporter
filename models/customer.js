@@ -6,7 +6,7 @@ const customerSchema = new Schema({
   customerId: {
     type: String, 
     unique: true,
-    required: [true, 'Customer requires an ID']},
+    required: [true, 'Customer requires a unique ID']},
   firstName: String,
   lastName: String
 });
