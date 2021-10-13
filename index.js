@@ -9,9 +9,10 @@ const dbUrl = "mongodb://localhost:27017/shopDB";
 
 // Declare the Order model
 const Order = require('./models/order.js');
+const Customer = require("./models/customer.js");
 
-mongoose.Promise = global.Promise;
-mongoose.set('debug', true);
+// mongoose.Promise = global.Promise;
+// mongoose.set('debug', true);
 
 const csvImporter = async (fileToImport) => {
   await mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
@@ -24,10 +25,17 @@ const csvImporter = async (fileToImport) => {
       console.log("CSV has "+ csvData.length + " Documents");
       return csvData;
   });
-       
-  await Order.insertMany(csv, { ordered: false }, (err, res) => {
+  const existingCustomer = [];
+  for (let i=0; i<csv.length; i++){
+    if (await Customer.exists({ customerId: csv[i]["customerId"] })) {
+      existingCustomer.push(csv[i]);
+    } else {
+      continue;
+    }
+  }
+  await Order.insertMany(existingCustomer, { ordered: false }, (err, res) => {
     if (err) console.log(err);
-    console.log("CSV has been imported..."+ res.length+" files");
+    console.log("CSV has been imported..."+ res.length+" documents");
     mongoose.disconnect();
   });
 }
