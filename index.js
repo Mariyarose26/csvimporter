@@ -11,11 +11,10 @@ const dbUrl = "mongodb://localhost:27017/shopDB";
 const Order = require('./models/order.js');
 const Customer = require("./models/customer.js");
 
-mongoose.Promise = global.Promise;
 mongoose.set('debug', true);
 
 const csvImporter = async (fileToImport) => {
-  await mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+  mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log("MongoDB connected ...");
   });
 
@@ -33,7 +32,7 @@ const csvImporter = async (fileToImport) => {
       continue;
     }
   }
-  await Order.insertMany(existingCustomer, { ordered: false }, (err, res) => {
+  Order.insertMany(existingCustomer, { ordered: false }, (err, res) => {
     if (err) console.log(err);
     console.log("CSV has been imported..."+ res.length+" documents");
     mongoose.disconnect();
